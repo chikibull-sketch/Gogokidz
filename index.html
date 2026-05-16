@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="GoGoKidz">
+<meta name="theme-color" content="#7C3AED">
+<title>GoGoKidz</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--rad:16px;--rad-sm:10px;--rad-pill:999px;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F8F7FF;min-height:100vh;padding-bottom:80px;}
+.header{background:#7C3AED;padding:1rem 1.25rem;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;}
+.header::after{content:"";position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:#EC4899;border-radius:50%;opacity:0.2;}
+.header::before{content:"";position:absolute;right:30px;bottom:-25px;width:70px;height:70px;background:#F59E0B;border-radius:50%;opacity:0.18;}
+.logo-c{width:44px;height:44px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;z-index:1;}
+.logo-t{color:white;z-index:1;}
+.logo-t h1{font-size:20px;font-weight:600;letter-spacing:-0.3px;}
+.logo-t p{font-size:11px;opacity:0.8;margin-top:1px;}
+.sync-badge{margin-left:auto;z-index:1;font-size:11px;padding:4px 11px;border-radius:999px;background:rgba(255,255,255,0.2);color:white;font-weight:500;}
+.sync-badge.ok{background:rgba(16,185,129,0.4);}
+.sync-badge.err{background:rgba(239,68,68,0.4);}
+.tabs{display:flex;background:white;border-bottom:1px solid #EDE9FE;position:sticky;top:0;z-index:100;}
+.tab{flex:1;padding:10px 4px 8px;font-size:11px;cursor:pointer;border:none;background:none;color:#9CA3AF;display:flex;flex-direction:column;align-items:center;gap:3px;border-bottom:2px solid transparent;font-family:inherit;}
+.tab i{font-size:20px;}
+.tab.active{color:#7C3AED;border-bottom-color:#7C3AED;font-weight:600;}
+.content{padding:1rem;max-width:600px;margin:0 auto;}
+.section{display:none;}.section.active{display:block;}
+.card{background:white;border:1.5px solid #EDE9FE;border-radius:var(--rad);padding:1rem 1.1rem;margin-bottom:.875rem;}
+.section-title{font-size:13px;font-weight:600;margin-bottom:.625rem;color:#1F2937;display:flex;align-items:center;gap:6px;}
+.section-title i{color:#7C3AED;font-size:16px;}
+.sep{height:1.5px;background:#F3F0FF;margin:.875rem 0;border-radius:2px;}
+.field{display:flex;flex-direction:column;gap:4px;flex:1;min-width:100px;}
+.field label{font-size:12px;color:#6B7280;font-weight:500;}
+.field input,.field select,.field textarea{border-radius:var(--rad-sm);border:1.5px solid #DDD6FE;background:white;padding:9px 11px;font-size:14px;outline:none;color:#1F2937;width:100%;font-family:inherit;-webkit-appearance:none;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#7C3AED;box-shadow:0 0 0 3px rgba(124,58,237,0.1);}
+.field textarea{resize:vertical;min-height:60px;}
+.row{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px;}
+.btn{padding:11px 20px;font-size:14px;cursor:pointer;border-radius:var(--rad-pill);border:2px solid #7C3AED;background:white;color:#7C3AED;font-family:inherit;font-weight:600;transition:all 0.15s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:#7C3AED;color:white;}
+.btn-primary:hover{background:#5B21B6;border-color:#5B21B6;}
+.btn:hover{background:#F3F0FF;}
+.btn-green{background:#10B981;color:white;border-color:#10B981;}
+.btn-green:hover{background:#059669;border-color:#059669;}
+.btn-wa{background:#25D366;color:white;border-color:#25D366;font-size:12px;padding:6px 12px;}
+.btn-wa:hover{background:#128C7E;border-color:#128C7E;}
+.btn-pdf{background:#EF4444;color:white;border-color:#EF4444;font-size:12px;padding:6px 12px;}
+.btn-pdf:hover{background:#DC2626;border-color:#DC2626;}
+.btn-danger{border-color:#EF4444;color:#EF4444;padding:6px 12px;font-size:12px;border-width:1.5px;}
+.btn-danger:hover{background:#FEE2E2;}
+.btn:disabled{opacity:0.5;cursor:not-allowed;}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem;}
+.metric{border-radius:var(--rad);padding:.75rem .875rem;border:1.5px solid transparent;}
+.metric.mp{background:#EDE9FE;border-color:#DDD6FE;}
+.metric.mg{background:#D1FAE5;border-color:#A7F3D0;}
+.metric.my{background:#FEF3C7;border-color:#FDE68A;}
+.metric.mk{background:#FCE7F3;border-color:#F9A8D4;}
+.metric.mo{background:#FFEDD5;border-color:#FED7AA;}
+.metric.mgr{background:#F3F4F6;border-color:#E5E7EB;}
+.metric label{font-size:11px;color:#6B7280;display:block;margin-bottom:3px;}
+.metric .val{font-size:18px;font-weight:600;color:#1F2937;}
+.cal-header{display:flex;align-items:center;gap:8px;margin-bottom:.875rem;}
+.cal-nav{border:2px solid #EDE9FE;background:#EDE9FE;cursor:pointer;font-size:15px;color:#7C3AED;padding:7px 13px;border-radius:var(--rad-pill);font-weight:600;}
+.cal-nav:hover{background:#DDD6FE;}
+.cal-title{font-size:15px;font-weight:600;flex:1;text-align:center;color:#1F2937;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;}
+.cal-day-label{text-align:center;font-size:10px;color:#9CA3AF;padding:3px;font-weight:600;}
+.cal-day{min-height:46px;border:1.5px solid #F3F0FF;border-radius:8px;padding:4px 5px;cursor:pointer;transition:all 0.1s;background:white;}
+.cal-day:hover{border-color:#7C3AED;background:#FAF5FF;}
+.cal-day.other-month{opacity:0.28;}
+.cal-day.today{border:2px solid #7C3AED;}
+.cal-day .dn{font-size:11px;font-weight:600;color:#1F2937;}
+.cal-day.fds .dn{color:#EC4899;}
+.dots-row{display:flex;gap:2px;flex-wrap:wrap;margin-top:2px;}
+.cal-dot{width:7px;height:7px;border-radius:50%;}
+.d1{background:#7C3AED;}.d2{background:#EC4899;}.d3{background:#F59E0B;}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:.875rem;}
+.slot{border:2px solid #EDE9FE;border-radius:var(--rad);padding:10px;cursor:pointer;transition:all 0.15s;background:white;}
+.slot:hover{border-color:#7C3AED;}
+.slot .s-icon{font-size:18px;margin:2px 0;}
+.slot .s-time{font-size:10px;color:#9CA3AF;margin-top:2px;}
+.slot .s-name{font-size:12px;font-weight:600;margin-top:2px;}
+.slot .s-price{font-size:11px;margin-top:2px;}
+.slot.livre{border-color:#A7F3D0;background:#F0FDF9;}
+.slot.livre .s-name{color:#059669;}
+.slot.livre .s-price{color:#059669;}
+.slot.ocupado{border-color:#DDD6FE;background:#FAF5FF;}
+.slot.ocupado .s-name{color:#7C3AED;}
+.pill{font-size:11px;padding:3px 9px;border-radius:var(--rad-pill);font-weight:600;display:inline-block;}
+.pp{background:#EDE9FE;color:#5B21B6;}
+.pg{background:#D1FAE5;color:#065F46;}
+.py{background:#FEF3C7;color:#92400E;}
+.pr{background:#FEE2E2;color:#991B1B;}
+.tema-pill{background:#FEF3C7;color:#92400E;font-size:10px;padding:2px 8px;border-radius:var(--rad-pill);font-weight:600;display:inline-block;margin-top:2px;}
+.alergia-pill{background:#FEE2E2;color:#991B1B;font-size:10px;padding:2px 8px;border-radius:var(--rad-pill);font-weight:600;display:inline-block;margin-top:2px;}
+.reserva-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid #EDE9FE;border-radius:var(--rad);background:white;margin-bottom:6px;}
+.ri-info{flex:1;min-width:0;}
+.ri-nome{font-size:13px;font-weight:600;color:#1F2937;}
+.ri-det{font-size:11px;color:#6B7280;margin-top:1px;}
+.ri-preco{font-size:13px;font-weight:600;color:#059669;white-space:nowrap;}
+.gasto-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid #FCE7F3;border-radius:var(--rad);background:white;margin-bottom:6px;}
+.gi-cat{font-size:10px;padding:3px 8px;border-radius:var(--rad-pill);background:#FCE7F3;color:#9D174D;font-weight:600;white-space:nowrap;}
+.gi-info{flex:1;font-size:13px;color:#1F2937;}
+.gi-sub{font-size:11px;color:#6B7280;}
+.gi-val{font-size:13px;font-weight:600;color:#EF4444;white-space:nowrap;}
+.preco-box{background:#F3F0FF;border:1.5px solid #DDD6FE;border-radius:var(--rad);padding:12px 14px;margin-top:.75rem;}
+.preco-total{font-size:24px;font-weight:700;color:#7C3AED;}
+.preco-label{font-size:11px;color:#7C3AED;opacity:0.7;margin-bottom:3px;}
+.preco-det{font-size:12px;color:#7C3AED;opacity:0.75;margin-top:3px;}
+.radio-group{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px;}
+.radio-card{border:2px solid #EDE9FE;border-radius:var(--rad-sm);padding:8px 11px;cursor:pointer;flex:1;min-width:80px;transition:all 0.15s;background:white;}
+.radio-card:hover{border-color:#7C3AED;}
+.radio-card.sel{border-color:#7C3AED;background:#EDE9FE;}
+.radio-card .rc-label{font-size:12px;font-weight:600;color:#1F2937;}
+.radio-card .rc-sub{font-size:10px;color:#6B7280;margin-top:1px;}
+.parcial-wrap{background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:var(--rad-sm);padding:9px 12px;margin-bottom:10px;display:none;}
+.parcial-wrap.show{display:block;}
+.alert{padding:9px 12px;border-radius:var(--rad-sm);font-size:13px;margin-top:9px;}
+.alert-warn{background:#FEF3C7;color:#92400E;}
+.alert-ok{background:#D1FAE5;color:#065F46;}
+.alert-err{background:#FEE2E2;color:#991B1B;}
+.alert-info{background:#EDE9FE;color:#5B21B6;}
+.empty{text-align:center;color:#9CA3AF;font-size:13px;padding:2rem 1rem;}
+.filtro-row{display:flex;gap:8px;margin-bottom:.875rem;flex-wrap:wrap;}
+.filtro-row input[type=month]{flex:1;min-width:130px;border-radius:var(--rad-sm);border:1.5px solid #DDD6FE;padding:8px 11px;font-size:13px;background:white;color:#1F2937;font-family:inherit;}
+.chart-bar-wrap{margin-top:.5rem;}
+.chart-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.chart-label{font-size:11px;color:#6B7280;width:100px;text-align:right;flex-shrink:0;}
+.chart-bar{height:18px;border-radius:var(--rad-pill);min-width:4px;}
+.chart-val{font-size:11px;color:#6B7280;}
+.mes-tab-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.875rem;padding-bottom:4px;}
+.mes-pill{padding:6px 12px;border-radius:var(--rad-pill);border:1.5px solid #DDD6FE;background:white;color:#7C3AED;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:inherit;}
+.mes-pill.active{background:#7C3AED;color:white;border-color:#7C3AED;}
+.mes-pill:hover:not(.active){background:#EDE9FE;}
+.dia-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:8px;flex-wrap:wrap;}
+.dia-title{font-size:14px;font-weight:600;color:#7C3AED;}
+.dia-tipo{font-size:11px;padding:3px 10px;border-radius:var(--rad-pill);font-weight:600;}
+.dia-tipo.fds{background:#FCE7F3;color:#9D174D;}
+.dia-tipo.semana{background:#EDE9FE;color:#5B21B6;}
+.tema-sugestoes{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
+.tema-tag{font-size:11px;padding:4px 10px;border-radius:var(--rad-pill);background:#F3F0FF;color:#7C3AED;border:1.5px solid #DDD6FE;cursor:pointer;font-family:inherit;font-weight:500;}
+.tema-tag:hover{background:#EDE9FE;}
+.espera-item{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1.5px solid #FEF3C7;border-radius:var(--rad);background:white;margin-bottom:6px;}
+.espera-info{flex:1;font-size:13px;color:#1F2937;}
+.espera-sub{font-size:11px;color:#6B7280;}
+.action-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-c">🎂</div>
+  <div class="logo-t">
+    <h1>GoGoKidz</h1>
+    <p>Gestão de festas &amp; eventos infantis</p>
+  </div>
+  <div class="sync-badge" id="sync-badge">⟳ A ligar...</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('agenda')"><i class="ti ti-calendar"></i> Agenda</button>
+  <button class="tab" onclick="switchTab('nova')"><i class="ti ti-plus"></i> Reserva</button>
+  <button class="tab" onclick="switchTab('gastos')"><i class="ti ti-receipt"></i> Gastos</button>
+  <button class="tab" onclick="switchTab('espera')"><i class="ti ti-clock"></i> Espera</button>
+  <button class="tab" onclick="switchTab('relatorio')"><i class="ti ti-chart-bar"></i> Relatório</button>
+</div>
+
+<div class="content">
+
+  <!-- AGENDA -->
+  <div id="tab-agenda" class="section active">
+    <div class="cal-header">
+      <button class="cal-nav" onclick="changeMonth(-1)"><i class="ti ti-chevron-left"></i></button>
+      <div class="cal-title" id="cal-title"></div>
+      <button class="cal-nav" onclick="changeMonth(1)"><i class="ti ti-chevron-right"></i></button>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-day-label">Dom</div><div class="cal-day-label">Seg</div><div class="cal-day-label">Ter</div><div class="cal-day-label">Qua</div><div class="cal-day-label">Qui</div><div class="cal-day-label">Sex</div><div class="cal-day-label" style="color:#EC4899;">Sáb</div>
+    </div>
+    <div class="cal-grid" id="cal-days"></div>
+    <div class="sep"></div>
+    <div id="dia-detalhe"><div class="empty">Clica num dia para ver as festas</div></div>
+  </div>
+
+  <!-- NOVA RESERVA -->
+  <div id="tab-nova" class="section">
+    <div class="card">
+      <div class="section-title"><i class="ti ti-calendar-event"></i> Dados da festa</div>
+      <div class="row">
+        <div class="field"><label>Data</label><input type="date" id="nr-data" oninput="updatePreco()"></div>
+        <div class="field"><label>Festa</label>
+          <select id="nr-slot" oninput="updatePreco()">
+            <option value="1">Festa da manhã (09:00–12:00)</option>
+            <option value="2">Festa intermédio (13:00–16:00)</option>
+            <option value="3">Festa tarde (17:00–20:00)</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Nome do cliente</label><input type="text" id="nr-nome" placeholder="Ex: Família Silva"></div>
+        <div class="field"><label>Telemóvel</label><input type="tel" id="nr-tel" placeholder="9XX XXX XXX"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Nome da criança</label><input type="text" id="nr-crianca" placeholder="Ex: Mateus"></div>
+        <div class="field"><label>Idade que faz 🎂</label><input type="number" id="nr-idade" placeholder="Ex: 5" min="1" max="17"></div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Nº de crianças</label><input type="number" id="nr-num" placeholder="Ex: 15" min="1"></div>
+        <div class="field"><label>Tema da festa</label>
+          <input type="text" id="nr-tema" placeholder="Ex: Dinossauros...">
+        </div>
+      </div>
+      <div class="tema-sugestoes" style="margin-bottom:10px;">
+        <button class="tema-tag" onclick="setTema('Dinossauros')">Dinossauros</button>
+        <button class="tema-tag" onclick="setTema('Princesas')">Princesas</button>
+        <button class="tema-tag" onclick="setTema('Super-heróis')">Super-heróis</button>
+        <button class="tema-tag" onclick="setTema('Unicórnios')">Unicórnios</button>
+        <button class="tema-tag" onclick="setTema('Carros')">Carros</button>
+        <button class="tema-tag" onclick="setTema('Frozen')">Frozen</button>
+        <button class="tema-tag" onclick="setTema('Safari')">Safari</button>
+        <button class="tema-tag" onclick="setTema('Futebol')">Futebol</button>
+        <button class="tema-tag" onclick="setTema('Sereia')">Sereia</button>
+        <button class="tema-tag" onclick="setTema('Espaço')">Espaço</button>
+      </div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>🚨 Alergias / necessidades especiais</label>
+        <textarea id="nr-alergias" placeholder="Ex: Alergia a amendoins, intolerância à lactose, necessita cadeira de rodas..."></textarea>
+      </div>
+      <div class="sep"></div>
+      <div class="section-title"><i class="ti ti-sparkles"></i> Extras</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7280;cursor:pointer;"><input type="checkbox" id="ex-pinturas" onchange="updatePreco()" style="accent-color:#7C3AED;width:16px;height:16px;"> Pinturas faciais (+75€)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7280;cursor:pointer;"><input type="checkbox" id="ex-perscomp" onchange="updatePreco()" style="accent-color:#7C3AED;width:16px;height:16px;"> Personalização completa (+189€)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7280;cursor:pointer;"><input type="checkbox" id="ex-persbas" onchange="updatePreco()" style="accent-color:#7C3AED;width:16px;height:16px;"> Personalização básica (+79€)</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B7280;cursor:pointer;"><input type="checkbox" id="ex-hora" onchange="updatePreco()" style="accent-color:#7C3AED;width:16px;height:16px;"> Hora extra (+50€) — só festa tarde</label>
+      </div>
+      <div class="sep"></div>
+      <div class="section-title"><i class="ti ti-coin"></i> Pagamento</div>
+      <div class="radio-group">
+        <div class="radio-card sel" data-val="pendente" onclick="selEstado(this)"><div class="rc-label">Pendente</div><div class="rc-sub">Sem pagamento</div></div>
+        <div class="radio-card" data-val="sinal" onclick="selEstado(this)"><div class="rc-label">Sinal 50€</div><div class="rc-sub">Confirma reserva</div></div>
+        <div class="radio-card" data-val="parcial" onclick="selEstado(this)"><div class="rc-label">Parcial</div><div class="rc-sub">Outro valor</div></div>
+        <div class="radio-card" data-val="pago" onclick="selEstado(this)"><div class="rc-label">Pago total</div><div class="rc-sub">Liquidado</div></div>
+      </div>
+      <div class="parcial-wrap" id="parcial-wrap">
+        <label style="font-size:12px;font-weight:600;color:#92400E;display:block;margin-bottom:5px;">Valor recebido (€)</label>
+        <input type="number" id="nr-parcial" placeholder="Ex: 105" min="1" step="0.01" oninput="updatePreco()" style="border-radius:10px;border:1.5px solid #FDE68A;padding:8px 11px;width:150px;font-size:15px;background:white;color:#92400E;font-family:inherit;">
+      </div>
+      <div class="preco-box">
+        <div class="preco-label">Total da festa</div>
+        <div class="preco-total" id="preco-preview">–</div>
+        <div class="preco-det" id="preco-det"></div>
+      </div>
+      <div style="margin-top:.875rem;">
+        <button class="btn btn-primary" id="btn-guardar" onclick="guardarReserva()"><i class="ti ti-device-floppy"></i> Guardar reserva</button>
+      </div>
+      <div id="nr-feedback"></div>
+    </div>
+  </div>
+
+  <!-- GASTOS -->
+  <div id="tab-gastos" class="section">
+    <div class="card">
+      <div class="section-title"><i class="ti ti-receipt"></i> Registar gasto</div>
+      <div class="row">
+        <div class="field"><label>Data</label><input type="date" id="g-data"></div>
+        <div class="field"><label>Categoria</label>
+          <select id="g-cat">
+            <option>Material de limpeza</option><option>Decoração</option><option>Pessoal</option><option>Renda</option><option>Água / Luz</option><option>Marketing</option><option>Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Valor (€)</label><input type="number" id="g-val" placeholder="0.00" step="0.01" min="0"></div>
+        <div class="field"><label>Descrição</label><input type="text" id="g-desc" placeholder="Ex: Balões temáticos"></div>
+      </div>
+      <button class="btn btn-primary" id="btn-gasto" onclick="guardarGasto()"><i class="ti ti-plus"></i> Adicionar gasto</button>
+      <div id="g-feedback"></div>
+    </div>
+    <div class="sep"></div>
+    <div class="section-title"><i class="ti ti-history"></i> Histórico</div>
+    <div class="filtro-row"><input type="month" id="g-filtro-mes" onchange="renderGastos()"></div>
+    <div id="gastos-list"></div>
+  </div>
+
+  <!-- LISTA DE ESPERA -->
+  <div id="tab-espera" class="section">
+    <div class="card">
+      <div class="section-title"><i class="ti ti-clock"></i> Adicionar à lista de espera</div>
+      <div class="row">
+        <div class="field"><label>Data pretendida</label><input type="date" id="e-data"></div>
+        <div class="field"><label>Slot preferido</label>
+          <select id="e-slot">
+            <option value="1">Festa da manhã</option>
+            <option value="2">Festa intermédio</option>
+            <option value="3">Festa tarde</option>
+            <option value="0">Qualquer slot</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Nome do cliente</label><input type="text" id="e-nome" placeholder="Ex: Família Costa"></div>
+        <div class="field"><label>Telemóvel</label><input type="tel" id="e-tel" placeholder="9XX XXX XXX"></div>
+      </div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Notas</label>
+        <input type="text" id="e-notas" placeholder="Ex: Flexível na data, prefere manhãs">
+      </div>
+      <button class="btn btn-primary" onclick="guardarEspera()"><i class="ti ti-plus"></i> Adicionar à lista</button>
+      <div id="e-feedback"></div>
+    </div>
+    <div class="sep"></div>
+    <div class="section-title"><i class="ti ti-list"></i> Lista de espera</div>
+    <div id="espera-list"></div>
+  </div>
+
+  <!-- RELATÓRIO -->
+  <div id="tab-relatorio" class="section">
+    <div class="section-title"><i class="ti ti-calendar-stats"></i> Selecciona o mês</div>
+    <div class="mes-tab-row" id="mes-tabs"></div>
+    <div class="metric-grid" id="r-metrics"></div>
+    <div class="sep"></div>
+    <div class="section-title"><i class="ti ti-chart-bar"></i> Receita por tipo</div>
+    <div id="r-chart"></div>
+    <div class="sep"></div>
+    <div class="section-title"><i class="ti ti-list"></i> Reservas do mês</div>
+    <div id="r-reservas"></div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBruoAn_C9pJsM2RHFVawv1ppDDGzgq8LA",
+  authDomain: "gogokidz-c46be.firebaseapp.com",
+  projectId: "gogokidz-c46be",
+  storageBucket: "gogokidz-c46be.firebasestorage.app",
+  messagingSenderId: "836756860809",
+  appId: "1:836756860809:web:e5901bd2f8b7e1ff357b58"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+const SLOTS={"1":"Festa da manhã","2":"Festa intermédio","3":"Festa tarde","0":"Qualquer slot"};
+const TIMES={"1":"09:00–12:00","2":"13:00–16:00","3":"17:00–20:00"};
+const ICONS={"1":"☀️","2":"🌤️","3":"🌙"};
+const MESES=["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MS=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+const DPTS=["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+const P={fds:210,semana:160,hora:50,pint:75,pcomp:189,pbas:79};
+
+let reservas=[], gastos=[], esperas=[], calY, calM, estadoSel="pendente", relMes="";
+
+function syncBadge(ok,msg){const b=document.getElementById("sync-badge");b.textContent=msg;b.className="sync-badge "+(ok?"ok":"err");}
+
+db.collection("reservas").orderBy("data").onSnapshot(snap=>{
+  reservas=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderCalendar();renderMesTabs();
+  syncBadge(true,"✓ Sincronizado");
+},err=>{syncBadge(false,"✗ Sem ligação");});
+
+db.collection("gastos").orderBy("data","desc").onSnapshot(snap=>{
+  gastos=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderGastos();renderRelatorio();
+},err=>{});
+
+db.collection("esperas").orderBy("data").onSnapshot(snap=>{
+  esperas=snap.docs.map(d=>({id:d.id,...d.data()}));
+  renderEspera();
+},err=>{});
+
+function isFds(ds){const d=new Date(ds+"T12:00:00");return d.getDay()===0||d.getDay()===6;}
+function setTema(t){document.getElementById("nr-tema").value=t;}
+function selEstado(el){
+  document.querySelectorAll(".radio-card").forEach(c=>c.classList.remove("sel"));
+  el.classList.add("sel");estadoSel=el.dataset.val;
+  document.getElementById("parcial-wrap").classList.toggle("show",estadoSel==="parcial");
+  updatePreco();
+}
+function getEx(){return{hora:document.getElementById("ex-hora").checked,pint:document.getElementById("ex-pinturas").checked,pcomp:document.getElementById("ex-perscomp").checked,pbas:document.getElementById("ex-persbas").checked};}
+function calcTotal(ds,slot,ex){
+  if(!ds)return null;
+  let t=isFds(ds)?P.fds:P.semana;
+  if(ex.hora&&parseInt(slot)===3)t+=P.hora;
+  if(ex.pint)t+=P.pint;if(ex.pcomp)t+=P.pcomp;if(ex.pbas)t+=P.pbas;
+  return t;
+}
+function updatePreco(){
+  const ds=document.getElementById("nr-data").value;
+  const slot=document.getElementById("nr-slot").value;
+  const ex=getEx();const tot=calcTotal(ds,slot,ex);
+  const prev=document.getElementById("preco-preview");
+  const det=document.getElementById("preco-det");
+  if(!tot){prev.textContent="–";det.textContent="";return;}
+  prev.textContent=tot+"€";
+  if(estadoSel==="sinal")det.textContent="Sinal: 50€ · Restante: "+(tot-50)+"€";
+  else if(estadoSel==="parcial"){const p=parseFloat(document.getElementById("nr-parcial").value)||0;det.textContent=p>0?"Recebido: "+p.toFixed(2)+"€ · Restante: "+(tot-p).toFixed(2)+"€":"Introduz o valor recebido";}
+  else if(estadoSel==="pago")det.textContent="Pago na totalidade ✓";
+  else det.textContent=isFds(ds)?"Fim de semana · base 210€":"Semana · base 160€";
+}
+
+async function guardarReserva(){
+  const ds=document.getElementById("nr-data").value;
+  const slot=document.getElementById("nr-slot").value;
+  const nome=document.getElementById("nr-nome").value.trim();
+  const tel=document.getElementById("nr-tel").value.trim();
+  const crianca=document.getElementById("nr-crianca").value.trim();
+  const idade=document.getElementById("nr-idade").value.trim();
+  const num=document.getElementById("nr-num").value.trim();
+  const tema=document.getElementById("nr-tema").value.trim();
+  const alergias=document.getElementById("nr-alergias").value.trim();
+  const fb=document.getElementById("nr-feedback");
+  if(!ds||!nome){fb.innerHTML='<div class="alert alert-warn">Preenche data e nome do cliente.</div>';return;}
+  if(reservas.find(r=>r.data===ds&&r.slot===slot)){fb.innerHTML='<div class="alert alert-err">Esse slot já está reservado!</div>';return;}
+  const ex=getEx();const total=calcTotal(ds,slot,ex);
+  let vr=0;
+  if(estadoSel==="sinal")vr=50;
+  else if(estadoSel==="pago")vr=total;
+  else if(estadoSel==="parcial"){vr=parseFloat(document.getElementById("nr-parcial").value)||0;if(vr<=0){fb.innerHTML='<div class="alert alert-warn">Introduz o valor parcial.</div>';return;}}
+  const btn=document.getElementById("btn-guardar");
+  btn.disabled=true;btn.textContent="A guardar...";
+  try{
+    await db.collection("reservas").add({data:ds,slot,nome,tel,crianca,idade,num,tema,alergias,ex,total,estado:estadoSel,vr,criadoEm:new Date().toISOString()});
+    fb.innerHTML=`<div class="alert alert-ok">✓ Reserva guardada! Total: ${total}€</div>`;
+    ["nr-nome","nr-tel","nr-crianca","nr-idade","nr-num","nr-tema","nr-alergias","nr-parcial"].forEach(id=>document.getElementById(id).value="");
+    ["ex-hora","ex-pinturas","ex-perscomp","ex-persbas"].forEach(id=>document.getElementById(id).checked=false);
+    document.getElementById("parcial-wrap").classList.remove("show");
+    document.querySelectorAll(".radio-card").forEach(c=>c.classList.remove("sel"));
+    document.querySelector('.radio-card[data-val="pendente"]').classList.add("sel");
+    estadoSel="pendente";
+    document.getElementById("preco-preview").textContent="–";
+    document.getElementById("preco-det").textContent="";
+  }catch(e){fb.innerHTML='<div class="alert alert-err">Erro: '+e.message+'</div>';}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-device-floppy"></i> Guardar reserva';
+}
+
+// WhatsApp lembrete
+function enviarWhatsApp(r){
+  const ex=[];
+  if(r.ex&&r.ex.pint)ex.push("Pinturas faciais");
+  if(r.ex&&r.ex.pcomp)ex.push("Personalização completa");
+  if(r.ex&&r.ex.pbas)ex.push("Personalização básica");
+  if(r.ex&&r.ex.hora)ex.push("Hora extra");
+  const restante=r.total-(r.vr||0);
+  const msg=`🎉 *GoGoKidz — Confirmação de Reserva*\n\nOlá ${r.nome}! 👋\n\nA vossa festa está confirmada:\n📅 *Data:* ${r.data}\n⏰ *Horário:* ${TIMES[r.slot]} (${SLOTS[r.slot]})\n🎂 *Aniversariante:* ${r.crianca||"–"}${r.idade?" ("+r.idade+" anos)":""}\n🎨 *Tema:* ${r.tema||"A definir"}${ex.length?"\n✨ *Extras:* "+ex.join(", "):""}\n\n💰 *Total:* ${r.total}€\n✅ *Pago:* ${r.vr||0}€${restante>0?"\n⏳ *Restante:* "+restante+"€":"\n✅ *Liquidado*"}\n\nQualquer dúvida estamos aqui! 🎊`;
+  const tel=r.tel.replace(/\s/g,"").replace(/^\+/,"");
+  const url="https://wa.me/351"+tel+"?text="+encodeURIComponent(msg);
+  window.open(url,"_blank");
+}
+
+// Comprovativo PDF
+function gerarPDF(r){
+  const ex=[];
+  if(r.ex&&r.ex.pint)ex.push("Pinturas faciais (+75€)");
+  if(r.ex&&r.ex.pcomp)ex.push("Personalização completa (+189€)");
+  if(r.ex&&r.ex.pbas)ex.push("Personalização básica (+79€)");
+  if(r.ex&&r.ex.hora)ex.push("Hora extra (+50€)");
+  const restante=r.total-(r.vr||0);
+  const estadoLabel=r.estado==="pago"?"Pago na totalidade":r.estado==="sinal"?"Sinal de 50€ recebido":r.estado==="parcial"?r.vr+"€ recebido":"Pendente";
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Comprovativo GoGoKidz</title>
+  <style>body{font-family:Arial,sans-serif;max-width:500px;margin:40px auto;padding:20px;color:#1F2937;}
+  .logo{text-align:center;margin-bottom:24px;}.logo h1{color:#7C3AED;font-size:28px;margin:0;}
+  .logo p{color:#9CA3AF;font-size:13px;}
+  .box{border:2px solid #EDE9FE;border-radius:12px;padding:20px;margin-bottom:16px;}
+  .box h2{color:#7C3AED;font-size:14px;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px;}
+  .row{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;}
+  .label{color:#6B7280;}.value{font-weight:600;text-align:right;}
+  .total-box{background:#F3F0FF;border-radius:12px;padding:16px;text-align:center;}
+  .total-box .t{font-size:28px;font-weight:700;color:#7C3AED;}
+  .total-box .s{font-size:13px;color:#6B7280;margin-top:4px;}
+  .alergia{background:#FEE2E2;border-radius:8px;padding:10px;font-size:13px;color:#991B1B;margin-top:8px;}
+  .footer{text-align:center;color:#9CA3AF;font-size:12px;margin-top:24px;}
+  @media print{body{margin:0;}}</style></head>
+  <body>
+  <div class="logo"><h1>🎂 GoGoKidz</h1><p>Comprovativo de Reserva</p></div>
+  <div class="box"><h2>Dados da Festa</h2>
+  <div class="row"><span class="label">Data</span><span class="value">${r.data}</span></div>
+  <div class="row"><span class="label">Horário</span><span class="value">${TIMES[r.slot]} — ${SLOTS[r.slot]}</span></div>
+  <div class="row"><span class="label">Aniversariante</span><span class="value">${r.crianca||"–"}${r.idade?" (faz "+r.idade+" anos)":""}</span></div>
+  <div class="row"><span class="label">Tema</span><span class="value">${r.tema||"A definir"}</span></div>
+  <div class="row"><span class="label">Nº crianças</span><span class="value">${r.num||"–"}</span></div>
+  ${r.alergias?'<div class="alergia">⚠️ Alergias/necessidades: '+r.alergias+'</div>':""}</div>
+  <div class="box"><h2>Cliente</h2>
+  <div class="row"><span class="label">Nome</span><span class="value">${r.nome}</span></div>
+  <div class="row"><span class="label">Telemóvel</span><span class="value">${r.tel||"–"}</span></div></div>
+  ${ex.length?'<div class="box"><h2>Extras</h2>'+ex.map(e=>'<div class="row"><span class="label">'+e+'</span></div>').join("")+'</div>':""}
+  <div class="total-box">
+  <div class="t">${r.total}€</div>
+  <div class="s">${estadoLabel}${restante>0?" · Restante: "+restante+"€":""}</div></div>
+  <div class="footer">GoGoKidz · Emitido em ${new Date().toLocaleDateString("pt-PT")}</div>
+  <script>window.onload=()=>window.print();<\/script></body></html>`;
+  const w=window.open("","_blank");w.document.write(html);w.document.close();
+}
+
+function renderCalendar(){
+  const now=new Date();
+  if(calY===undefined){calY=now.getFullYear();calM=now.getMonth();}
+  document.getElementById("cal-title").textContent=MESES[calM]+" "+calY;
+  const fd=new Date(calY,calM,1).getDay();
+  const dim=new Date(calY,calM+1,0).getDate();
+  const dip=new Date(calY,calM,0).getDate();
+  let html="";
+  for(let i=0;i<42;i++){
+    let day,tm=true,m=calM+1,y=calY;
+    if(i<fd){day=dip-fd+i+1;tm=false;m=calM===0?12:calM;y=calM===0?calY-1:calY;}
+    else if(i-fd<dim){day=i-fd+1;}
+    else{day=i-fd-dim+1;tm=false;m=calM+2>12?1:calM+2;y=calM+1>=12?calY+1:calY;}
+    const ds=`${y}-${String(m).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+    const isT=tm&&day===now.getDate()&&calM===now.getMonth()&&calY===now.getFullYear();
+    const dow=new Date(ds+"T12:00:00").getDay();const wk=dow===0||dow===6;
+    const rd=reservas.filter(r=>r.data===ds);
+    let dots=rd.map(r=>`<span class="cal-dot d${r.slot}"></span>`).join("");
+    html+=`<div class="cal-day${!tm?" other-month":""}${isT?" today":""}${wk?" fds":""}" onclick="showDia('${ds}')"><div class="dn">${day}</div><div class="dots-row">${dots}</div></div>`;
+  }
+  document.getElementById("cal-days").innerHTML=html;
+}
+function changeMonth(d){calM+=d;if(calM<0){calM=11;calY--;}if(calM>11){calM=0;calY++;}renderCalendar();}
+
+function showDia(ds){
+  const d=new Date(ds+"T12:00:00");const dow=d.getDay();const fds=dow===0||dow===6;
+  const label=DPTS[dow]+", "+d.getDate()+" de "+MESES[d.getMonth()]+" "+d.getFullYear();
+  let html=`<div class="dia-header"><div class="dia-title">${label}</div><span class="dia-tipo ${fds?"fds":"semana"}">${fds?"Fim de semana · 210€":"Semana · 160€"}</span></div><div class="slot-grid">`;
+  ["1","2","3"].forEach(sid=>{
+    const r=reservas.find(rv=>rv.data===ds&&rv.slot===sid);
+    if(r){
+      const ex=[];
+      if(r.ex&&r.ex.pint)ex.push("Pinturas");if(r.ex&&r.ex.pcomp)ex.push("Pers. completa");if(r.ex&&r.ex.pbas)ex.push("Pers. básica");if(r.ex&&r.ex.hora)ex.push("Hora extra");
+      const sp=r.estado==="pago"?'<span class="pill pg">Pago</span>':r.estado==="sinal"?'<span class="pill pp">Sinal 50€</span>':r.estado==="parcial"?`<span class="pill py">${r.vr}€ rec.</span>`:'<span class="pill pr">Pendente</span>';
+      const rid=JSON.stringify(r).replace(/"/g,"&quot;");
+      html+=`<div class="slot ocupado">
+        <div class="s-icon">${ICONS[sid]}</div>
+        <div class="s-time">${TIMES[sid]}</div>
+        <div class="s-name">${SLOTS[sid]}</div>
+        <div style="font-size:12px;font-weight:600;color:#7C3AED;margin-top:3px;">${r.nome}</div>
+        ${r.crianca?`<div style="font-size:10px;color:#6B7280;">🎂 ${r.crianca}${r.idade?" — faz "+r.idade+" anos":""}</div>`:""}
+        ${r.tema?`<span class="tema-pill">🎨 ${r.tema}</span>`:""}
+        ${r.alergias?`<span class="alergia-pill">⚠️ ${r.alergias}</span>`:""}
+        <div style="margin-top:4px;display:flex;gap:3px;flex-wrap:wrap;">${sp}<span class="pill pp">${r.total}€</span></div>
+        ${ex.length?`<div style="font-size:10px;color:#6B7280;margin-top:2px;">+${ex.join(", ")}</div>`:""}
+        <div class="action-row">
+          <button class="btn btn-wa" onclick='enviarWhatsApp(${JSON.stringify(r).replace(/'/g,"\\'")})'><i class="ti ti-brand-whatsapp"></i> WhatsApp</button>
+          <button class="btn btn-pdf" onclick='gerarPDF(${JSON.stringify(r).replace(/'/g,"\\'")})'><i class="ti ti-file-text"></i> PDF</button>
+          <button class="btn btn-danger" style="border-radius:999px;" onclick="apagarR('${r.id}','${ds}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>`;
+    }else{
+      html+=`<div class="slot livre" onclick="preencherNova('${ds}','${sid}')">
+        <div class="s-icon">${ICONS[sid]}</div>
+        <div class="s-time">${TIMES[sid]}</div>
+        <div class="s-name">${SLOTS[sid]}</div>
+        <div class="s-price">${fds?210:160}€ base</div>
+      </div>`;
+    }
+  });
+  html+="</div>";
+  document.getElementById("dia-detalhe").innerHTML=html;
+}
+
+function preencherNova(ds,slot){switchTab("nova");document.getElementById("nr-data").value=ds;document.getElementById("nr-slot").value=slot;updatePreco();}
+async function apagarR(id,ds){if(!confirm("Apagar esta reserva?"))return;try{await db.collection("reservas").doc(id).delete();showDia(ds);}catch(e){alert("Erro: "+e.message);}}
+
+async function guardarGasto(){
+  const ds=document.getElementById("g-data").value;
+  const cat=document.getElementById("g-cat").value;
+  const val=parseFloat(document.getElementById("g-val").value);
+  const desc=document.getElementById("g-desc").value.trim();
+  const fb=document.getElementById("g-feedback");
+  if(!ds||isNaN(val)||val<=0){fb.innerHTML='<div class="alert alert-warn">Preenche data e valor.</div>';return;}
+  const btn=document.getElementById("btn-gasto");btn.disabled=true;btn.textContent="A guardar...";
+  try{
+    await db.collection("gastos").add({data:ds,cat,val,desc,criadoEm:new Date().toISOString()});
+    fb.innerHTML='<div class="alert alert-ok">✓ Gasto registado!</div>';
+    document.getElementById("g-data").value="";document.getElementById("g-val").value="";document.getElementById("g-desc").value="";
+  }catch(e){fb.innerHTML='<div class="alert alert-err">Erro: '+e.message+'</div>';}
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-plus"></i> Adicionar gasto';
+}
+async function apagarG(id){if(!confirm("Apagar?"))return;try{await db.collection("gastos").doc(id).delete();}catch(e){alert("Erro: "+e.message);}}
+
+async function guardarEspera(){
+  const ds=document.getElementById("e-data").value;
+  const slot=document.getElementById("e-slot").value;
+  const nome=document.getElementById("e-nome").value.trim();
+  const tel=document.getElementById("e-tel").value.trim();
+  const notas=document.getElementById("e-notas").value.trim();
+  const fb=document.getElementById("e-feedback");
+  if(!ds||!nome){fb.innerHTML='<div class="alert alert-warn">Preenche data e nome.</div>';return;}
+  try{
+    await db.collection("esperas").add({data:ds,slot,nome,tel,notas,criadoEm:new Date().toISOString()});
+    fb.innerHTML='<div class="alert alert-ok">✓ Adicionado à lista de espera!</div>';
+    ["e-data","e-nome","e-tel","e-notas"].forEach(id=>document.getElementById(id).value="");
+  }catch(e){fb.innerHTML='<div class="alert alert-err">Erro: '+e.message+'</div>';}
+}
+async function apagarEspera(id){if(!confirm("Remover da lista?"))return;try{await db.collection("esperas").doc(id).delete();}catch(e){alert("Erro: "+e.message);}}
+
+function enviarWhatsAppEspera(e){
+  const msg=`🎉 *GoGoKidz — Slot Disponível!*\n\nOlá ${e.nome}! 👋\n\nTemos uma vaga disponível para a data que pretendias (${e.data})!\n\nEntre em contacto connosco para confirmar a reserva. 🎂`;
+  const tel=e.tel.replace(/\s/g,"").replace(/^\+/,"");
+  window.open("https://wa.me/351"+tel+"?text="+encodeURIComponent(msg),"_blank");
+}
+
+function renderEspera(){
+  if(!esperas.length){document.getElementById("espera-list").innerHTML='<div class="empty">Lista de espera vazia.</div>';return;}
+  document.getElementById("espera-list").innerHTML=esperas.map(e=>`
+    <div class="espera-item">
+      <div class="espera-info">
+        <div style="font-weight:600;">${e.nome}</div>
+        <div class="espera-sub">📅 ${e.data} · ${SLOTS[e.slot]||"Qualquer slot"}${e.notas?" · "+e.notas:""}</div>
+        ${e.tel?`<div class="espera-sub">📱 ${e.tel}</div>`:""}
+        <div class="action-row" style="margin-top:6px;">
+          ${e.tel?`<button class="btn btn-wa" onclick='enviarWhatsAppEspera(${JSON.stringify(e).replace(/'/g,"\\'")})'><i class="ti ti-brand-whatsapp"></i> Avisar</button>`:""}
+          <button class="btn btn-danger" style="border-radius:999px;" onclick="apagarEspera('${e.id}')"><i class="ti ti-trash"></i></button>
+        </div>
+      </div>
+    </div>`).join("");
+}
+
+function renderGastos(){
+  const mes=document.getElementById("g-filtro-mes").value;
+  let lista=mes?gastos.filter(g=>g.data.startsWith(mes)):gastos;
+  if(!lista.length){document.getElementById("gastos-list").innerHTML='<div class="empty">Sem gastos registados.</div>';return;}
+  document.getElementById("gastos-list").innerHTML=lista.map(g=>`
+    <div class="gasto-item">
+      <span class="gi-cat">${g.cat}</span>
+      <div class="gi-info">${g.desc||g.cat}<div class="gi-sub">${g.data}</div></div>
+      <span class="gi-val">-${parseFloat(g.val).toFixed(2)}€</span>
+      <button class="btn btn-danger" style="border-radius:999px;font-size:11px;padding:5px 10px;" onclick="apagarG('${g.id}')"><i class="ti ti-trash"></i></button>
+    </div>`).join("");
+}
+
+function getMeses(){
+  const s=new Set();reservas.forEach(r=>s.add(r.data.slice(0,7)));gastos.forEach(g=>s.add(g.data.slice(0,7)));
+  const now=new Date();s.add(now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0"));
+  return[...s].sort();
+}
+function renderMesTabs(){
+  const meses=getMeses();
+  const now=new Date();const atual=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+  if(!relMes||!meses.includes(relMes))relMes=meses.includes(atual)?atual:(meses[meses.length-1]||atual);
+  document.getElementById("mes-tabs").innerHTML=meses.map(m=>{
+    const[y,mo]=m.split("-");
+    return`<button class="mes-pill${m===relMes?" active":""}" onclick="selectMes('${m}')">${MS[parseInt(mo)-1]} ${y}</button>`;
+  }).join("")||"<span style='font-size:12px;color:#9CA3AF;'>Sem dados ainda</span>";
+  renderRelatorio();
+}
+function selectMes(m){relMes=m;renderMesTabs();}
+function renderRelatorio(){
+  const rM=reservas.filter(r=>r.data.startsWith(relMes));
+  const gM=gastos.filter(g=>g.data.startsWith(relMes));
+  const totRec=rM.reduce((s,r)=>s+r.total,0);
+  const totReceb=rM.reduce((s,r)=>s+(r.vr||0),0);
+  const totPend=totRec-totReceb;
+  const totGasto=gM.reduce((s,g)=>s+g.val,0);
+  const lucro=totReceb-totGasto;
+  document.getElementById("r-metrics").innerHTML=`
+    <div class="metric mp"><label>Receita total</label><div class="val">${totRec.toFixed(2)}€</div></div>
+    <div class="metric mg"><label>Recebido</label><div class="val">${totReceb.toFixed(2)}€</div></div>
+    <div class="metric my"><label>Pendente</label><div class="val">${totPend.toFixed(2)}€</div></div>
+    <div class="metric mk"><label>Gastos</label><div class="val">${totGasto.toFixed(2)}€</div></div>
+    <div class="metric mo"><label>Lucro real</label><div class="val">${lucro.toFixed(2)}€</div></div>
+    <div class="metric mgr"><label>Nº festas</label><div class="val">${rM.length}</div></div>`;
+  const cats={};
+  rM.forEach(r=>{
+    const k=isFds(r.data)?"Fim de semana":"Semana";cats[k]=(cats[k]||0)+(isFds(r.data)?P.fds:P.semana);
+    if(r.ex&&r.ex.pint)cats["Pinturas"]=(cats["Pinturas"]||0)+P.pint;
+    if(r.ex&&r.ex.pcomp)cats["Pers. completa"]=(cats["Pers. completa"]||0)+P.pcomp;
+    if(r.ex&&r.ex.pbas)cats["Pers. básica"]=(cats["Pers. básica"]||0)+P.pbas;
+    if(r.ex&&r.ex.hora)cats["Hora extra"]=(cats["Hora extra"]||0)+P.hora;
+  });
+  const cols=["#7C3AED","#EC4899","#F59E0B","#10B981","#F97316"];
+  const maxV=Math.max(...Object.values(cats),1);
+  let ch='<div class="chart-bar-wrap">';
+  Object.entries(cats).forEach(([k,v],i)=>{ch+=`<div class="chart-row"><div class="chart-label">${k}</div><div class="chart-bar" style="width:${Math.round((v/maxV)*200)}px;background:${cols[i%5]};opacity:0.85;"></div><div class="chart-val">${v}€</div></div>`;});
+  if(!Object.keys(cats).length)ch+='<div class="empty">Sem dados.</div>';
+  ch+="</div>";document.getElementById("r-chart").innerHTML=ch;
+  const sorted=[...rM].sort((a,b)=>a.data.localeCompare(b.data));
+  document.getElementById("r-reservas").innerHTML=sorted.length?sorted.map(r=>{
+    const ex=[];
+    if(r.ex&&r.ex.pint)ex.push("Pinturas");if(r.ex&&r.ex.pcomp)ex.push("Pers. completa");if(r.ex&&r.ex.pbas)ex.push("Pers. básica");if(r.ex&&r.ex.hora)ex.push("Hora extra");
+    const eb=r.estado==="pago"?'<span class="pill pg">Pago</span>':r.estado==="sinal"?'<span class="pill pp">Sinal 50€</span>':r.estado==="parcial"?`<span class="pill py">${r.vr}€</span>`:'<span class="pill pr">Pendente</span>';
+    return`<div class="reserva-item">
+      <div style="background:#F3F0FF;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">${ICONS[r.slot]}</div>
+      <div class="ri-info">
+        <div class="ri-nome">${r.nome}${r.crianca?" — "+r.crianca:""}${r.idade?" ("+r.idade+" anos)":""}${r.tema?` <span class="tema-pill">🎨 ${r.tema}</span>`:""}</div>
+        <div class="ri-det">${r.data} · ${SLOTS[r.slot]}${ex.length?" · "+ex.join(", "):""}</div>
+        ${r.alergias?`<div style="font-size:11px;color:#991B1B;margin-top:2px;">⚠️ ${r.alergias}</div>`:""}
+      </div>
+      ${eb}<span class="ri-preco">${r.total}€</span>
+    </div>`;
+  }).join(""):'<div class="empty">Sem reservas neste mês.</div>';
+}
+
+function switchTab(t){
+  const tabs=["agenda","nova","gastos","espera","relatorio"];
+  document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("active",tabs[i]===t));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("tab-"+t).classList.add("active");
+  if(t==="relatorio")renderMesTabs();
+  if(t==="gastos")renderGastos();
+  if(t==="espera")renderEspera();
+  if(t==="agenda")renderCalendar();
+}
+
+const now2=new Date();
+const ma=now2.getFullYear()+"-"+String(now2.getMonth()+1).padStart(2,"0");
+document.getElementById("g-filtro-mes").value=ma;
+document.getElementById("nr-data").value=now2.toISOString().split("T")[0];
+document.getElementById("g-data").value=now2.toISOString().split("T")[0];
+document.getElementById("e-data").value=now2.toISOString().split("T")[0];
+renderCalendar();renderMesTabs();
+</script>
+</body>
+</html>
